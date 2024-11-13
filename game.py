@@ -2,7 +2,7 @@ import pygame
 import random
 
 from unit import *
-
+# Author: anis
 
 class Game:
     """
