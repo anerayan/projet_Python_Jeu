@@ -2,7 +2,7 @@
 """
 MenuHandler: Gérer le menu principal du jeu ChronoTactics
 author anis
-Ajout de Couleurs : Le titre est affiché en jaune et la sélection en gris pour une meilleure visibilité.
+Ajout de Couleurses : Le titre est affiché en jaune et la sélection en gris pour une meilleure visibilité.
 Options de Menu : Trois options sont maintenant disponibles : "Jouer", "Options" (pour des fonctionnalités futures), et "Quitter".
 Navigation avec Flèches : Le joueur peut utiliser les flèches haut et bas pour naviguer dans le menu, et appuyer sur "Entrée" pour sélectionner une option.
 """
