@@ -1,68 +1,48 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov 27 17:23:51 2024
+import pygame
+import random
+from unit import Unit
 
-<<<<<<< HEAD
-@author: rayan
-"""
-
-=======
-from unit import *
-# Author: anis
+# Constantes
+GRID_SIZE = 8
+CELL_SIZE = 60
+WIDTH = GRID_SIZE * CELL_SIZE
+HEIGHT = GRID_SIZE * CELL_SIZE
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
+ORANGE = (255, 165, 0)
 
 class Game:
     """
-    Classe pour représenter le jeu.
-
-    ...
-    Attributs
-    ---------
-    screen: pygame.Surface
-        La surface de la fenêtre du jeu.
-    player_units : list[Unit]
-        La liste des unités du joueur.
-    enemy_units : list[Unit]
-        La liste des unités de l'adversaire.
+    Classe pour gérer le jeu ChronoTactics.
     """
 
     def __init__(self, screen):
-        """
-        Construit le jeu avec la surface de la fenêtre.
-
-        Paramètres
-        ----------
-        screen : pygame.Surface
-            La surface de la fenêtre du jeu.
-        """
         self.screen = screen
-        self.player_units = [Unit(0, 0, 10, 2, 'player'),
-                             Unit(1, 0, 10, 2, 'player')]
-
-        self.enemy_units = [Unit(6, 6, 8, 1, 'enemy'),
-                            Unit(7, 6, 8, 1, 'enemy')]
+        self.player_units = [
+            Unit(0, 0, 15, 3, 'player'),
+            Unit(1, 0, 12, 2, 'player'),
+        ]
+        self.enemy_units = [
+            Unit(6, 6, 10, 2, 'enemy'),
+            Unit(7, 6, 10, 2, 'enemy'),
+        ]
+        self.portals = [(3, 3), (6, 1)]  # Portails temporels connectés
+        self.anomalies = [(2, 2), (5, 5)]  # Cases ralentissantes
 
     def handle_player_turn(self):
-        """Tour du joueur"""
+        """Gestion du tour des joueurs."""
         for selected_unit in self.player_units:
-
-            # Tant que l'unité n'a pas terminé son tour
             has_acted = False
             selected_unit.is_selected = True
-            self.flip_display()
+            self.render()
             while not has_acted:
-
-                # Important: cette boucle permet de gérer les événements Pygame
                 for event in pygame.event.get():
-
-                    # Gestion de la fermeture de la fenêtre
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         exit()
 
-                    # Gestion des touches du clavier
                     if event.type == pygame.KEYDOWN:
-
-                        # Déplacement (touches fléchées)
                         dx, dy = 0, 0
                         if event.key == pygame.K_LEFT:
                             dx = -1
@@ -74,71 +54,87 @@ class Game:
                             dy = 1
 
                         selected_unit.move(dx, dy)
-                        self.flip_display()
 
-                        # Attaque (touche espace) met fin au tour
+                        # Portail : téléportation
+                        if (selected_unit.x, selected_unit.y) in self.portals:
+                            self.teleport_unit(selected_unit)
+
+                        # Anomalie : ralentissement
+                        elif (selected_unit.x, selected_unit.y) in self.anomalies:
+                            print(f"⚠️ {selected_unit.team} ralentit à cause de l'anomalie temporelle !")
+
+                        self.render()
+
+                        # Touche espace pour attaquer
                         if event.key == pygame.K_SPACE:
                             for enemy in self.enemy_units:
                                 if abs(selected_unit.x - enemy.x) <= 1 and abs(selected_unit.y - enemy.y) <= 1:
                                     selected_unit.attack(enemy)
                                     if enemy.health <= 0:
                                         self.enemy_units.remove(enemy)
+                                    has_acted = True
 
-                            has_acted = True
-                            selected_unit.is_selected = False
+            selected_unit.is_selected = False
 
     def handle_enemy_turn(self):
-        """IA très simple pour les ennemis."""
+        """Gestion du tour de l'ennemi."""
         for enemy in self.enemy_units:
-
-            # Déplacement aléatoire
             target = random.choice(self.player_units)
             dx = 1 if enemy.x < target.x else -1 if enemy.x > target.x else 0
             dy = 1 if enemy.y < target.y else -1 if enemy.y > target.y else 0
             enemy.move(dx, dy)
 
-            # Attaque si possible
             if abs(enemy.x - target.x) <= 1 and abs(enemy.y - target.y) <= 1:
                 enemy.attack(target)
                 if target.health <= 0:
                     self.player_units.remove(target)
 
-    def flip_display(self):
-        """Affiche le jeu."""
+    def teleport_unit(self, unit):
+        """Téléporte une unité à un portail connecté."""
+        print(f"🌀 {unit.team} traverse un portail temporel !")
+        for portal in self.portals:
+            if portal != (unit.x, unit.y):
+                unit.x, unit.y = portal
+                break
 
-        # Affiche la grille
+    def render(self):
+        """Affiche l'état actuel du jeu."""
         self.screen.fill(BLACK)
         for x in range(0, WIDTH, CELL_SIZE):
             for y in range(0, HEIGHT, CELL_SIZE):
                 rect = pygame.Rect(x, y, CELL_SIZE, CELL_SIZE)
                 pygame.draw.rect(self.screen, WHITE, rect, 1)
 
-        # Affiche les unités
+        # Portails
+        for px, py in self.portals:
+            pygame.draw.circle(self.screen, BLUE, (px * CELL_SIZE + CELL_SIZE // 2, py * CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 3)
+
+        # Anomalies
+        for ax, ay in self.anomalies:
+            pygame.draw.circle(self.screen, ORANGE, (ax * CELL_SIZE + CELL_SIZE // 2, ay * CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 3)
+
+        # Units
         for unit in self.player_units + self.enemy_units:
             unit.draw(self.screen)
 
-        # Rafraîchit l'écran
         pygame.display.flip()
 
 
 def main():
-
-    # Initialisation de Pygame
+    """Point d'entrée du jeu."""
     pygame.init()
-
-    # Instanciation de la fenêtre
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Mon jeu de stratégie")
+    pygame.display.set_caption("ChronoTactics")
+    clock = pygame.time.Clock()
 
-    # Instanciation du jeu
     game = Game(screen)
 
-    # Boucle principale du jeu
     while True:
         game.handle_player_turn()
         game.handle_enemy_turn()
+        game.render()
+        clock.tick(FPS)
 
 
 if __name__ == "__main__":
     main()
->>>>>>> 78dbb326a975a40c77c2cea3597001fcd4bebc23
