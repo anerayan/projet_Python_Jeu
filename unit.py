@@ -2,7 +2,7 @@ import pygame
 import random
 
 # Constantes
-GRID_SIZE = 8
+GRID_SIZE = 12
 CELL_SIZE = 60
 WIDTH = GRID_SIZE * CELL_SIZE
 HEIGHT = GRID_SIZE * CELL_SIZE
@@ -102,9 +102,12 @@ class Unit:
     
     
     
-    def display_health(self,name_unit):
-        
-        print(f"l'unité {name_unit}possède encore {self.health} points de vie")
+    def display_health(self):
+        print(f"l'unité {self.nom}possède encore {self.health} points de vie.")
     
     def attack_competence(self,target):
         self.competence.attaque(target,self)
+
+    def display_death(self):
+        print(f"L'unité {self.nom} est tombé au combat.")
+    
