@@ -11,9 +11,9 @@ from unit import Unit
 from Cromagnon import Homme_Cromagnon_player1, soin
 from Homme_futur import Homme_futur_player1
 from Normal import Homme_moderne_player1
-from Cromagnon_enemy import Homme_Cromagnon_player2
-from Normal_enemy import Homme_moderne_player2
-from Homme_futur_enemy import Homme_futur_player2
+from Cromagnon import Homme_Cromagnon_player2
+from Normal import Homme_moderne_player2
+from Homme_futur import Homme_futur_player2
 
 #from menu_chronotactics import handle_menu
 # Constantes
