@@ -6,7 +6,7 @@ Created on Wed Nov 27 17:23:51 2024
 @author: rayan
 """
 
-=======
+
 from unit import *
 # Author: anis
 
@@ -141,4 +141,4 @@ def main():
 
 if __name__ == "__main__":
     main()
->>>>>>> 78dbb326a975a40c77c2cea3597001fcd4bebc23
+
