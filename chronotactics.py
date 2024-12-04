@@ -31,7 +31,7 @@ class Game:
     Classe pour gérer le jeu ChronoTactics.
     """
 
-    def __init__(self, screen,selected_classes):
+    def __init__(self, screen,selected_classes,choix_joueur):
         
         """
         x : int
@@ -57,6 +57,7 @@ class Game:
         self.selected_classes = selected_classes
         self.player_units = selected_classes[0]
         self.enemy_units =  selected_classes[1]
+        self.choix_joueur = choix_joueur
         if selected_classes[0][0] == 'Cromagnon':
             self.player_units[0] = Homme_Cromagnon_player1()
         if selected_classes[0][0] == 'Homme Futur':
@@ -189,6 +190,95 @@ class Game:
                     enemy.display_death()
                     self.player_units.remove(target)
 
+
+
+    def handle_player_2_turn(self):
+        """Gestion du tour des joueurs."""
+        for selected_unit in self.enemy_units:
+            has_acted = False
+            selected_unit.is_selected = True
+            self.render()
+            cpt_move = 0
+            selected_unit.display_health()  
+            while not has_acted:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        exit()
+
+                    if event.type == pygame.KEYDOWN:
+                        dx, dy = 0, 0
+                        if cpt_move<selected_unit.move_counter:
+                            if event.key == pygame.K_LEFT:
+                                dx = -1
+                            elif event.key == pygame.K_RIGHT:
+                                dx = 1
+                            elif event.key == pygame.K_UP:
+                                dy = -1
+                            elif event.key == pygame.K_DOWN:
+                                dy = 1
+                            
+                   
+                            
+                        selected_unit.move(dx, dy)
+                        cpt_move+=1
+                        # Portail : téléportation
+                        if (selected_unit.x, selected_unit.y) in self.portals:
+                            self.teleport_unit(selected_unit)
+
+                        # Anomalie : ralentissement
+                        elif (selected_unit.x, selected_unit.y) in self.anomalies:
+                            if selected_unit.move_counter>2:
+                                selected_unit.move_counter -=1
+                            
+                            print(f"⚠️ {selected_unit.nom} ralentit à cause de l'anomalie temporelle !")
+                            print(f"L'unité{selected_unit.nom} ne peut plus faire que {selected_unit.move_counter} pas !")
+                        self.render()
+
+                        # Touche espace pour attaquer
+                        if event.key == pygame.K_SPACE:
+                            for enemy in self.enemy_units:
+                                if abs(selected_unit.x - enemy.x) <= 1 and abs(selected_unit.y - enemy.y) <= 1:
+                                    selected_unit.attack(enemy)
+                                    if enemy.health <= 0:
+                                        self.enemy_units.remove(enemy)
+                                    has_acted = True
+                                        
+                                    
+                        #touche N pour valider le tour
+                        if event.key == pygame.K_n:
+                            has_acted = True
+                         #touche ECHAP pour quitter le jeu   
+                        if event.key == pygame.K_ESCAPE:
+                            pygame.display.quit()
+                            pygame.quit()
+                        
+                        #touche C pour utiliser une attaque de loin
+                        if event.key == pygame.K_c:
+                            
+                            if selected_unit.nom == 'Homme de Cromagnon_joueur_2':
+                                     soin.methode_soin(selected_unit.health)
+                                     has_acted = True
+                                
+                            for enemy in self.player_units:
+    
+                                selected_unit.attack_competence(enemy)
+                                if enemy.health <= 0:
+                                    self.enemy_units.remove(enemy)
+                                    
+                            has_acted = True
+                        
+                        # #touche H pour se soigner:
+                        # if event.key == pygame.K_h:
+                        #     if selected_unit.nom == 'Homme de Cromagnon_joueur_1':
+                        #         selected_unit.heal()
+                        #         has_acted = True
+                                
+                    
+                         
+            selected_unit.is_selected = False
+        
+        
     def teleport_unit(self, unit):
         """Téléporte une unité à un portail connecté."""
         print(f"🌀 {unit.team} traverse un portail temporel !")
@@ -246,11 +336,18 @@ class Game:
             if self.enemy_units == []:
                 print("Vous avez gagné !")
                 pygame.quit()
-                
-            self.handle_enemy_turn()
+                break
+            if self.choix_joueur == 0:
+                self.handle_enemy_turn()
+            
+            elif self.choix_joueur == 1:
+                self.handle_player_2_turn()
+            
             if self.player_units == []:
-                print("Vous avez perdu !")
+                #print("Vous avez perdu !")
                 pygame.quit()
+                break
+                
             
     
 

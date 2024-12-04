@@ -9,7 +9,7 @@ import pygame
 # Constantes
 WIDTH, HEIGHT = 720, 720
 BLACK, WHITE, GRAY, YELLOW = (0, 0, 0), (255, 255, 255), (100, 100, 100), (255, 255, 0)
-
+choix_joueur = 0
 class Menu:
     def __init__(self, screen):
         self.screen = screen
@@ -46,9 +46,9 @@ class Menu:
                         self.selected_option = (self.selected_option + 1) % len(self.options)
                     elif event.key == pygame.K_RETURN:
                         if self.selected_option == 0:  # Jouer
-                            return "play"
+                            return "play",0
                         elif self.selected_option == 1:  # Jouer à 2
-                            print("Multijoueur - À implémenter.")
+                            return "play",1
                         elif self.selected_option == 2: #afficher règle
                             print("Affichage règle du jeu")
                         elif self.selected_option == 3:  # Quitter
@@ -157,7 +157,7 @@ def main():
 
     # Menu principal
     main_menu = Menu(screen)
-    action = main_menu.handle_menu()
+    action, choix_joueur = main_menu.handle_menu()
 
     if action == "play":
         # Menu de sélection des classes
@@ -174,7 +174,7 @@ def main():
        
         clock = pygame.time.Clock()
         
-        game = Game(screen,selected_classes)
+        Game(screen,selected_classes,choix_joueur)
         
         
         
