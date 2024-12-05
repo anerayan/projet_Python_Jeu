@@ -16,6 +16,7 @@ Mise à Jour de l'Écran : update_display() est utilisée pour actualiser l'écr
 """
 
 import pygame
+import os
 
 # Constantes pour les dimensions et les couleurs
 WIDTH = 800  # Largeur de l'écran
@@ -34,12 +35,24 @@ class GraphicsHandler:
 
     def __init__(self, screen):
         self.screen = screen
-        # Chargement des images
-        self.background_image = pygame.image.load('background_menu.jpg')  # Chargement d'une image de fond
-        self.cromagnon_image = pygame.image.load('cromagnon.png')  # Image du personnage Cromagnon
-        self.homme_futur_image = pygame.image.load('homme_futur.png')  # Image du personnage Homme Futur
-        self.portal_image = pygame.image.load('portal.png')  # Image pour les portails temporels
-        self.anomaly_image = pygame.image.load('anomaly.png')  # Image pour les anomalies temporelles
+        # Chemin vers le dossier des images
+        images_path = os.path.join(os.getcwd(), 'images')
+
+        # Chargement des images avec gestion des erreurs
+        try:
+            self.background_image = pygame.image.load(os.path.join(images_path, 'background_menu.jpg'))
+            self.background_image = pygame.transform.scale(self.background_image, (WIDTH, HEIGHT))
+            self.cromagnon_image = pygame.image.load(os.path.join(images_path, 'cromagnon.png'))
+            self.cromagnon_image = pygame.transform.scale(self.cromagnon_image, (60, 60))
+            self.homme_futur_image = pygame.image.load(os.path.join(images_path, 'homme_futur.png'))
+            self.homme_futur_image = pygame.transform.scale(self.homme_futur_image, (60, 60))
+            self.portal_image = pygame.image.load(os.path.join(images_path, 'portal.png'))
+            self.portal_image = pygame.transform.scale(self.portal_image, (60, 60))
+            self.anomaly_image = pygame.image.load(os.path.join(images_path, 'anomaly.png'))
+            self.anomaly_image = pygame.transform.scale(self.anomaly_image, (60, 60))
+        except FileNotFoundError as e:
+            print(f"Erreur : Fichier non trouvé - {e.filename}. Assurez-vous que le fichier est présent dans le dossier 'images'.")
+            exit()
 
     def display_background(self):
         """Affiche l'image de fond."""
@@ -119,5 +132,5 @@ if __name__ == "__main__":
     graphics.update_display()
 
     # Attendre quelques secondes pour visualiser le résultat
-    pygame.time.wait(3000)
+    pygame.time.wait(5000)
     pygame.quit()
