@@ -1,114 +1,65 @@
-import pygame
-import random
-
-# Constantes
-GRID_SIZE = 12
-CELL_SIZE = 60
-WIDTH = GRID_SIZE * CELL_SIZE
-HEIGHT = GRID_SIZE * CELL_SIZE
-FPS = 30
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
-
-
 class Unit:
-    """
-    Classe pour représenter une unité.
-
-    ...
-    Attributs
-    ---------
-    x : int
-        La position x de l'unité sur la grille.
-    y : int
-        La position y de l'unité sur la grille.
-    health : int
-        La santé de l'unité.
-    attack_power : int
-        La puissance d'attaque de l'unité.
-    team : str
-        L'équipe de l'unité ('player' ou 'enemy').
-    is_selected : bool
-        Si l'unité est sélectionnée ou non.
-
-    Méthodes
-    --------
-    move(dx, dy)
-        Déplace l'unité de dx, dy.
-    attack(target)
-        Attaque une unité cible.
-    draw(screen)
-        Dessine l'unité sur la grille.
-    """
-
-    def __init__(self, x, y, nom, health, attack_power, defense, team, move_counter, competence):
-
+    def __init__(self, x, y, nom, health, attack, defense, team, move_counter, competence):
         """
-        Construit une unité avec une position, une santé, une puissance d'attaque et une équipe.
+        Initialise une unité.
 
         Paramètres
         ----------
         x : int
-            La position x de l'unité sur la grille.
+            Coordonnée x sur la grille.
         y : int
-            La position y de l'unité sur la grille.
+            Coordonnée y sur la grille.
         nom : str
-            nom de l'unité'
+            Nom de l'unité.
         health : int
-            La santé de l'unité.
-        attack_power : int
-            La puissance d'attaque de l'unité.
+            Points de vie de l'unité.
+        attack : int
+            Valeur d'attaque de l'unité.
         defense : int
-            La défense de l'unité
+            Valeur de défense de l'unité.
         team : str
-            L'équipe de l'unité ('player' ou 'enemy').
+            Équipe de l'unité ('player' ou 'enemy').
         move_counter : int
-            nb de pas que l'unité peut faire'
-        competence : str
-            nom de la competence qu'utilise l'unité
+            Nombre de déplacements possibles.
+        competence : object
+            Compétence spéciale de l'unité.
         """
         self.x = x
         self.y = y
         self.nom = nom
         self.health = health
-        self.attack_power = attack_power
-        self.team = team# 'player' ou 'enemy'
-        self.is_selected = False
+        self.attack = attack
         self.defense = defense
+        self.team = team
         self.move_counter = move_counter
         self.competence = competence
+        self.is_selected = False
+
     def move(self, dx, dy):
-        """Déplace l'unité de dx, dy."""
-        
-        if 0 <= self.x + dx < GRID_SIZE and 0 <= self.y + dy < GRID_SIZE:
+        """Déplace l'unité de dx et dy si possible."""
+        if self.move_counter > 0:
             self.x += dx
             self.y += dy
-          
+            self.move_counter -= 1
+
     def attack(self, target):
-        """Attaque une unité cible."""
-        if abs(self.x - target.x) <= 1 and abs(self.y - target.y) <= 1:
-            target.health -= self.attack_power-target.defense
+        """Attaque une autre unité."""
+        damage = max(0, self.attack - target.defense)
+        target.health -= damage
 
-    def draw(self, screen):
-        """Affiche l'unité sur l'écran."""
-        color = BLUE if self.team == 'player' else RED
-        if self.is_selected:
-            pygame.draw.rect(screen, GREEN, (self.x * CELL_SIZE,
-                             self.y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-        pygame.draw.circle(screen, color, (self.x * CELL_SIZE + CELL_SIZE //
-                           2, self.y * CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 3)
-    
-    
-    
-    def display_health(self):
-        print(f"l'unité {self.nom}possède encore {self.health} points de vie.")
-    
-    def attack_competence(self,target):
-        self.competence.attaque(target,self)
+    def draw(self, screen, images):
+        """Affiche l'unité sur l'écran avec une image ou un cercle si l'image est manquante."""
+        if self.nom.startswith("Homme de Cromagnon"):
+            image = images.get("cromagnon")
+        elif self.nom.startswith("Homme Futur"):
+            image = images.get("homme_futur")
+        else:
+            image = images.get("anomaly")  # Image par défaut si le nom ne correspond pas
 
-    def display_death(self):
-        print(f"L'unité {self.nom} est tombé au combat.")
-    
+        if image:
+            screen.blit(image, (self.x * 60, self.y * 60))
+        else:
+            color = (0, 0, 255) if self.team == 'player' else (255, 0, 0)
+            if self.is_selected:
+                pygame.draw.rect(screen, (0, 255, 0), (self.x * 60, self.y * 60, 60, 60))
+            pygame.draw.circle(screen, color, (self.x * 60 + 30, self.y * 60 + 30), 20)
