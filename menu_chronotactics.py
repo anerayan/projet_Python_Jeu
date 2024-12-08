@@ -12,7 +12,7 @@ import os
 from menu_secondaire import MenuSecondaire
 
 # Constantes
-WIDTH = 12000  # Largeur de l'écran
+WIDTH = 1200  # Largeur de l'écran
 HEIGHT = 800  # Hauteur de l'écran
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
