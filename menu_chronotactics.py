@@ -33,22 +33,16 @@ class Menu:
 
     def display_menu(self):
         """Affiche le menu principal."""
-        self.screen.fill(BLACK)
+        self.screen.blit(self.background_image, (0, 0))  # Affiche l'image de fond
         font_title = pygame.font.Font(None, 100)
         font_option = pygame.font.Font(None, 50)
         title_text = font_title.render("ChronoTactics", True, YELLOW)
         self.screen.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, HEIGHT // 6))
 
         # Options du menu
-        options = ["Jouer", "Options", "Quitter"]
-        for i, option in enumerate(options):
-            if i == self.selected_option:
-                option_text = font_option.render(option, True, WHITE)
-                background_rect = pygame.Rect(WIDTH // 2 - 150, HEIGHT // 2 - 50 + i * 70, 300, 50)
-                pygame.draw.rect(self.screen, GRAY, background_rect)
-            else:
-                option_text = font_option.render(option, True, WHITE)
-
+        for i, option in enumerate(MAIN_OPTIONS):
+            color = WHITE if i == self.selected_option else GRAY
+            option_text = font_option.render(option, True, color)
             self.screen.blit(option_text, (WIDTH // 2 - option_text.get_width() // 2, HEIGHT // 2 - 50 + i * 70))
 
         pygame.display.flip()
@@ -63,37 +57,36 @@ class Menu:
                     exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        self.selected_option = (self.selected_option - 1) % 3
+                        self.selected_option = (self.selected_option - 1) % len(MAIN_OPTIONS)
                     elif event.key == pygame.K_DOWN:
-                        self.selected_option = (self.selected_option + 1) % 3
+                        self.selected_option = (self.selected_option + 1) % len(MAIN_OPTIONS)
                     elif event.key == pygame.K_RETURN:
-                        if self.selected_option == 0:  # Jouer
-                            self.menu_active = False
-                        elif self.selected_option == 1:  # Options (future expansion)
-                            print("Options - Cette fonctionnalité sera implémentée plus tard.")
-                        elif self.selected_option == 2:  # Quitter
-                            pygame.quit()
-                            exit()
+                        self.select_option()
     def show_rules(self):
-    self.screen.fill(BLACK)
-    font = pygame.font.Font(None, 50)
-    rules_text = [
-        "Règles du jeu ChronoTactics :",
-        "1. Déplacez vos unités pour éliminer vos ennemis.",
-        "2. Utilisez les portails temporels stratégiquement.",
-        "3. Vainquez tous les ennemis pour gagner.",
-    ]
-    y_offset = HEIGHT // 4
-    for line in rules_text:
-        text = font.render(line, True, WHITE)
-        self.screen.blit(text, (WIDTH // 2 - text.get_width() // 2, y_offset))
-        y_offset += 60
-    pygame.display.flip()
-    pygame.time.wait(5000)
+        self.screen.fill(BLACK)
+        font = pygame.font.Font(None, 50)
+        rules_text = [
+            "Règles du jeu ChronoTactics :",
+            "1. Déplacez vos unités pour éliminer vos ennemis.",
+            "2. Utilisez les portails temporels stratégiquement.",
+            "3. Vainquez tous les ennemis pour gagner.",
+        ]
+        y_offset = HEIGHT // 4
+        for line in rules_text:
+             text = font.render(line, True, WHITE)
+             self.screen.blit(text, (WIDTH // 2 - text.get_width() // 2, y_offset))
+             y_offset += 60
+        pygame.display.flip()
+        pygame.time.wait(5000)
 
     def select_option(self):
         """Exécute l'option sélectionnée."""
-        if self.selected_option in [0, 1]:  # Joueur 1 ou Joueur 2
+        if self.selected_option == 0:  # Joueur 1
+            print("Joueur 1 sélectionné. Ouverture du sous-menu...")
+            menu_secondaire = MenuSecondaire(self.screen, self.background_image)
+            menu_secondaire.handle_menu()
+        elif self.selected_option == 1:  # Joueur 2
+            print("Joueur 2 sélectionné. Ouverture du sous-menu...")
             menu_secondaire = MenuSecondaire(self.screen, self.background_image)
             menu_secondaire.handle_menu()
         elif self.selected_option == 2:  # Règles
@@ -116,7 +109,7 @@ if __name__ == "__main__":
     background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 
 
-    menu = Menu(screen)
+    menu = Menu(screen, background_image)
     menu.handle_menu()
     print("Jeu démarré...")
     pygame.quit()
