@@ -63,7 +63,7 @@ class Menu:
                     elif event.key == pygame.K_RETURN:
                         self.select_option()
     def show_rules(self):
-        self.screen.fill(BLACK)
+        self.screen.blit(self.background_image, (0, 0))  # Affiche l'image de fond
         font = pygame.font.Font(None, 50)
         rules_text = [
             "Règles du jeu ChronoTactics :",
