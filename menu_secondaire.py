@@ -1,8 +1,8 @@
 import pygame
 
 # Constantes
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 800
 WHITE = (255, 255, 255)
 GRAY = (100, 100, 100)
 YELLOW = (255, 255, 0)
