@@ -1,3 +1,10 @@
+
+"""
+Created on Sun Dec 8 
+
+@author: Houssameddine
+"""
+
 import pygame
 
 # Constantes
