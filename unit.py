@@ -1,3 +1,5 @@
+import pygame
+
 class Unit:
     def __init__(self, x, y, nom, health, attack, defense, team, move_counter, competence):
         """
@@ -40,12 +42,16 @@ class Unit:
         if self.move_counter > 0:
             self.x += dx
             self.y += dy
-            self.move_counter -= 1
+           
 
     def attack(self, target):
         """Attaque une autre unité."""
         damage = max(0, self.attack - target.defense)
         target.health -= damage
+
+    def competence_attack(self,target):
+        return self.competence.attack(target,self)
+
 
     def draw(self, screen, images):
         """Affiche l'unité sur l'écran avec une image ou un cercle si l'image est manquante."""

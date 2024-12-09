@@ -314,19 +314,6 @@ class Game:
 
         pygame.display.flip()
         
-    def set_player_classes(self, choices):
-        """
-        Définit les classes des joueurs en fonction des choix faits dans le menu.
-        """
-        p1_class, p2_class = choices
-
-    # Mappez les choix aux classes disponibles
-        player_classes = [Homme_Cromagnon_player1, Homme_moderne_player1, Homme_futur_player1]
-        enemy_classes = [Homme_Cromagnon_player2, Homme_moderne_player2, Homme_futur_player2]
-
-    # Créez les unités des joueurs
-        self.player_units = [player_classes[p1_class](), player_classes[p2_class]()]
-        self.enemy_units = [enemy_classes[p1_class](), enemy_classes[p2_class]()]
 
     def main(self):
         while True:
