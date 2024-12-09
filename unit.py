@@ -108,6 +108,9 @@ class Unit:
     def attack_competence(self,target):
         self.competence.attaque(target,self)
 
+    def meth_soin(self):
+        self.competence.methode_soin(self)
+    
     def display_death(self):
         print(f"L'unité {self.nom} est tombé au combat.")
     

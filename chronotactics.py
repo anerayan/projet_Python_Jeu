@@ -154,14 +154,15 @@ class Game:
                         if event.key == pygame.K_c:
                             
                             if selected_unit.nom == 'Homme de Cromagnon_joueur_1':
-                                     soin.methode_soin(selected_unit.health)
+                                     selected_unit.meth_soin()
                                      has_acted = True
-                                
-                            for enemy in self.enemy_units:
+                            else:
+                            
+                                for enemy in self.enemy_units:
     
-                                selected_unit.attack_competence(enemy)
-                                if enemy.health <= 0:
-                                    self.enemy_units.remove(enemy)
+                                    selected_unit.attack_competence(enemy)
+                                    if enemy.health <= 0:
+                                        self.enemy_units.remove(enemy)
                                     
                             has_acted = True
                         

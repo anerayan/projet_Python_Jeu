@@ -25,7 +25,9 @@ class competence:
             
          
     
-
+    def methode_soin(self,joueur):
+        if joueur.health<15:
+            joueur.health+=self.competence_defense
         
 class fusil(competence):
     def __init__(self):
@@ -36,3 +38,8 @@ class grenade(competence):
     def __init__(self):
         
         super().__init__(13,0,4)
+
+class soin(competence):
+    def __init__(self):
+        
+        super().__init__(0,5,0)

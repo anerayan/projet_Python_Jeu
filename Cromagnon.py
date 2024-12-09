@@ -5,7 +5,7 @@ Created on Wed Nov 27 14:19:46 2024
 @author: rayan
 """
 from unit import Unit
-from competences import competence
+from competences import competence,soin
 class Homme_Cromagnon_player1(Unit):
     #unité du passé
    
@@ -63,12 +63,6 @@ class Homme_Cromagnon_player2(Unit):
         super().__init__(7,8,'Homme de Cromagnon_joueur_2',20,10,8,'enemy',8,soin())
         
         
-class soin(competence):
-    def __init__(self):
+
         
-        super().__init__(0,5,0)
-        
-        
-    def methode_soin(self,health):
-        if health<30 :
-            health += self.competence_defense  
+         
