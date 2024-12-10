@@ -31,9 +31,16 @@ class Unit:
         if self.nom == 'Homme de Cromagnon':
             image = images.get("cromagnon")
         elif self.nom == 'Homme Futur':
-            image = images.get("homme_futur")
+            image = images.get("homme_futur" 
         else:
             image = images.get("anomaly")  # Image par défaut si le nom ne correspond pas
 
         if image:
             screen.blit(image, (self.x * 60, self.y * 60))
+    def draw_health_bar(self, screen):
+           """Affiche une barre de vie au-dessus de l'unité."""
+           bar_width = 50
+           bar_height = 5
+           fill = (self.health / 100) * bar_width
+           pygame.draw.rect(screen, (255, 0, 0), (self.x * 60, self.y * 60 - 10, bar_width, bar_height))  # Barre rouge
+           pygame.draw.rect(screen, (0, 255, 0), (self.x * 60, self.y * 60 - 10, fill, bar_height))  # Barre verte
