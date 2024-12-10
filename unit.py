@@ -1,10 +1,8 @@
 import pygame
 import random
 
-import pygame
-import random
 class Unit:
-    def __init__(self, x, y, nom, health, attack, defense, team, move_counter, competence,esquive):
+    def __init__(self, x, y, nom, health, attaque, defense, team, move_counter, competence,esquive):
         """
         Initialise une unité.
 
@@ -35,7 +33,7 @@ class Unit:
         self.y = y
         self.nom = nom
         self.health = health
-        self.attack = attack
+        self.attaque = attaque
         self.defense = defense
         self.team = team
         self.move_counter = move_counter
@@ -44,20 +42,21 @@ class Unit:
         self.esquive = esquive
     def move(self, dx, dy):
         """Déplace l'unité de dx et dy si possible."""
-        if self.move_counter > 0:
+        if self.x < 12 and self.y<12:
             self.x += dx
             self.y += dy
            
 
     def attack(self, target):
         """Attaque une autre unité."""
-        if random.randint(0,100)<self.esquive:
+        if random.randint(0,100)<target.esquive:
             
-            damage = max(0, self.attack - target.defense)
+            damage = max(0, (self.attaque - target.defense))
+            #print(damage)
             target.health -= damage
 
     def competence_attack(self,target):
-        if random.randint(0,100)<self.esquive:    
+        if random.randint(0,100)<target.esquive:    
             return self.competence.attack(target,self)
 
 

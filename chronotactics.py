@@ -138,6 +138,7 @@ class Game:
                         if event.key == pygame.K_SPACE:
                             for enemy in self.enemy_units:
                                 if abs(selected_unit.x - enemy.x) <= 1 and abs(selected_unit.y - enemy.y) <= 1:
+                                    print(enemy)
                                     selected_unit.attack(enemy)
                                     if enemy.health <= 0:
                                         self.enemy_units.remove(enemy)
@@ -154,25 +155,15 @@ class Game:
                         
                         #touche C pour utiliser une attaque de loin
                         if event.key == pygame.K_c:
-                            
-                            if selected_unit.nom == 'Homme de Cromagnon_joueur_1':
-                                     selected_unit.meth_soin()
-                                     has_acted = True
-                            else:
-                            
-                                for enemy in self.enemy_units:
-    
-                                    selected_unit.attack_competence(enemy)
-                                    if enemy.health <= 0:
-                                        self.enemy_units.remove(enemy)
+                          
+                            selected_unit.competence.attack(self.enemy_units,selected_unit)
+                            for enemy in self.enemy_units:
+                                if enemy.health <= 0:
+                                    self.enemy_units.remove(enemy)
                                     
                             has_acted = True
                         
-                        # #touche H pour se soigner:
-                        # if event.key == pygame.K_h:
-                        #     if selected_unit.nom == 'Homme de Cromagnon_joueur_1':
-                        #         selected_unit.heal()
-                        #         has_acted = True
+                 
                                 
                     
                          
@@ -259,23 +250,14 @@ class Game:
                         #touche C pour utiliser une attaque de loin
                         if event.key == pygame.K_c:
                             
-                            if selected_unit.nom == 'Homme de Cromagnon_joueur_2':
-                                     soin.methode_soin(selected_unit.health)
-                                     has_acted = True
-                            else:   
-                                for enemy in self.player_units:
-                                    
-                                    selected_unit.attack_competence(enemy)
-                                    if enemy.health <= 0:
-                                        self.enemy_units.remove(enemy)
+                            selected_unit.competence.attack(self.enemy_units,selected_unit)
+                            for enemy in self.enemy_units:
+                                if enemy.health <= 0:
+                                    self.enemy_units.remove(enemy)
                                     
                             has_acted = True
                         
-                        # #touche H pour se soigner:
-                        # if event.key == pygame.K_h:
-                        #     if selected_unit.nom == 'Homme de Cromagnon_joueur_1':
-                        #         selected_unit.heal()
-                        #         has_acted = True
+                      
                                 
                     
                          

@@ -95,8 +95,8 @@ class ClassSelectionMenu:
         print(f"Classes choisies : {selected_classes}")
 
         # Lancer le jeu avec les classes sélectionnées
-        game = Game(screen, selected_classes,choix)  # Passe les classes au jeu
-        game.run()
+        Game(screen, selected_classes,choix)  # Passe les classes au jeu
+        
 
         pygame.quit()
 
