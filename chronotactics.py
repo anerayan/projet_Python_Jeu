@@ -260,12 +260,12 @@ class Game:
                             if selected_unit.nom == 'Homme de Cromagnon_joueur_2':
                                      soin.methode_soin(selected_unit.health)
                                      has_acted = True
-                                
-                            for enemy in self.player_units:
-    
-                                selected_unit.attack_competence(enemy)
-                                if enemy.health <= 0:
-                                    self.enemy_units.remove(enemy)
+                            else:   
+                                for enemy in self.player_units:
+                                    
+                                    selected_unit.attack_competence(enemy)
+                                    if enemy.health <= 0:
+                                        self.enemy_units.remove(enemy)
                                     
                             has_acted = True
                         
@@ -339,4 +339,4 @@ class Game:
             
     
 
- 
+

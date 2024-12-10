@@ -31,7 +31,7 @@ class Homme_moderne_player1(Unit):
     competence : str
         nom de la competence qu'utilise l'unité
             """
-            super().__init__(0,1,'Homme_moderne_joueur_1',15,8,9,'player',9,grenade())
+            super().__init__(0,1,'Homme_moderne_joueur_1',15,8,9,'player',9,grenade(),70)
     
 
 class Homme_moderne_player2(Unit):
@@ -59,5 +59,5 @@ class Homme_moderne_player2(Unit):
     competence : str
         nom de la competence qu'utilise l'unité
             """
-            super().__init__(8,7,'Homme_moderne_joueur_2',15,8,9,'Enemy',9,grenade())
+            super().__init__(8,7,'Homme_moderne_joueur_2',15,8,9,'Enemy',9,grenade(),70)
        

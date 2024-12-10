@@ -4,10 +4,10 @@ Created on Wed Nov 27 16:54:32 2024
 
 @author: rayan
 """
-
+import random
 class competence:
     
-    def __init__(self,competence_power,competence_defense,portee):
+    def __init__(self,competence_power,competence_defense,portee,precision):
         
         self.competence_power = competence_power
         self.competence_defense = competence_defense
@@ -15,12 +15,13 @@ class competence:
         
         
     def attaque(self, cible,joueur):
-        
-        if self.portee>abs(cible.x-joueur.x) and cible.y == joueur.y: 
-            cible.health -= self.competence_power-cible.defense
+       if random.randint(0,100)<=self.precision:
+           
+           if self.portee>abs(cible.x-joueur.x) and cible.y == joueur.y: 
+               cible.health -= max(self.competence_power-cible.defense,0)
            # print(f"{self.nom} est utilisé sur {cible} avec une puissance de {self.puissance} !")
-        elif self.portee>abs(cible.y-joueur.y) and cible.x == joueur.x :
-            cible.health -= self.competence_power-cible.defense
+           elif self.portee>abs(cible.y-joueur.y) and cible.x == joueur.x :
+               cible.health -= max(self.competence_power-cible.defense,0)
             #print(f"{self.nom} est utilisé sur {cible} avec une puissance de {self.puissance} !")
             
          
@@ -32,14 +33,14 @@ class competence:
 class fusil(competence):
     def __init__(self):
         
-        super().__init__(18,0,8)
+        super().__init__(18,0,8,60)
 
 class grenade(competence):
     def __init__(self):
         
-        super().__init__(13,0,4)
+        super().__init__(13,0,4,75)
 
 class soin(competence):
     def __init__(self):
         
-        super().__init__(0,5,0)
+        super().__init__(0,5,0,100)
