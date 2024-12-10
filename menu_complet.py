@@ -1,22 +1,8 @@
 import pygame
 import os
-import random
 
-def load_images():
-    """Charge les images nécessaires au jeu."""
-    base_path = os.path.join(os.path.dirname(__file__), 'images')
-    images = {}
-    try:
-        images['background_menu'] = pygame.image.load(os.path.join(base_path, 'background_menu.jpg'))
-        images['cromagnon'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'cromagnon.png')), (60, 60))
-        images['homme_futur'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'homme_futur.png')), (60, 60))
-        images['portal'] = pygame.image.load(os.path.join(base_path, 'portal.png'))
-        images['anomaly'] = pygame.image.load(os.path.join(base_path, 'anomaly.png'))
-    except FileNotFoundError as e:
-        print(f"Erreur : {e}. Vérifiez que toutes les images sont présentes dans le dossier 'images'.")
-        pygame.quit()
-        exit()
-    return images
+
+
 
 class Menu:
     def __init__(self, screen, images):

@@ -7,6 +7,7 @@ Created on Wed Nov 27 14:12:14 2024
 
 import pygame
 import random
+import os
 from unit import Unit
 from Cromagnon import Homme_Cromagnon_player1, soin
 from Homme_futur import Homme_futur_player1
@@ -58,6 +59,7 @@ class Game:
         self.player_units = selected_classes[0]
         self.enemy_units =  selected_classes[1]
         self.choix_joueur = choix_joueur
+        self.images = self.load_images()
         if selected_classes[0][0] == 'Cromagnon':
             self.player_units[0] = Homme_Cromagnon_player1()
         if selected_classes[0][0] == 'Homme Futur':
@@ -96,7 +98,7 @@ class Game:
             selected_unit.is_selected = True
             self.render()
             cpt_move = 0
-            selected_unit.display_health()  
+            #selected_unit.display_health()  
             while not has_acted:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -179,7 +181,7 @@ class Game:
     def handle_enemy_turn(self):
         """Gestion du tour de l'ennemi."""
         for enemy in self.enemy_units:
-            enemy.display_health()  
+            #enemy.display_health()  
             target = random.choice(self.player_units)
             dx = 1 if enemy.x < target.x else -1 if enemy.x > target.x else 0
             dy = 1 if enemy.y < target.y else -1 if enemy.y > target.y else 0
@@ -200,7 +202,7 @@ class Game:
             selected_unit.is_selected = True
             self.render()
             cpt_move = 0
-            selected_unit.display_health()  
+            #selected_unit.display_health()  
             while not has_acted:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -306,16 +308,35 @@ class Game:
 
         # Units
         for unit in self.player_units: 
-            unit.draw(self.screen)
+            unit.draw(self.screen,self.images)
         
         for unit in self.enemy_units:
-            unit.draw(self.screen)
+            unit.draw(self.screen,self.images)
            
 
         pygame.display.flip()
         
 
+    def load_images(self):
+        """Charge les images nécessaires au jeu."""
+        base_path = os.path.join(os.path.dirname(__file__), 'images')
+        images = {}
+        try:
+            images['background_menu'] = pygame.image.load(os.path.join(base_path, 'background_menu.jpg'))
+            images['cromagnon'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'cromagnon.png')), (60, 60))
+            images['homme_moderne'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'future_soldier.png')), (60, 60))
+            images['homme_futur'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'homme_futur.png')), (60, 60))
+            images['portal'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'portal.png')), (60, 60))
+            images['anomaly'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'anomaly.png')), (60, 60))
+        except FileNotFoundError as e:
+            print(f"Erreur : {e}. Vérifiez que toutes les images sont présentes dans le dossier 'images'.")
+            pygame.quit()
+            exit()
+        return images
+    
+
     def main(self):
+        self.images = self.load_images()
         while True:
             if self.enemy_units != [] and self.player_units != []:
                 self.render()

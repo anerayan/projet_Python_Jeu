@@ -83,11 +83,11 @@ class Menu:
         """Exécute l'option sélectionnée."""
         if self.selected_option == 0:  # Joueur 1
             print("Joueur 1 sélectionné. Ouverture du sous-menu...")
-            menu_secondaire = MenuSecondaire(self.screen, self.background_image)
+            menu_secondaire = MenuSecondaire(self.screen, self.background_image,self.selected_option)
             menu_secondaire.handle_menu()
         elif self.selected_option == 1:  # Joueur 2
             print("Joueur 2 sélectionné. Ouverture du sous-menu...")
-            menu_secondaire = MenuSecondaire(self.screen, self.background_image)
+            menu_secondaire = MenuSecondaire(self.screen, self.background_image,self.selected_option)
             menu_secondaire.handle_menu()
         elif self.selected_option == 2:  # Règles
             self.show_rules()

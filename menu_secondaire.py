@@ -6,7 +6,7 @@ Created on Sun Dec 8
 """
 
 import pygame
-
+from menu3 import ClassSelectionMenu
 # Constantes
 WIDTH = 1200
 HEIGHT = 800
@@ -17,9 +17,10 @@ YELLOW = (255, 255, 0)
 SECONDARY_OPTIONS = ["Jouer", "Options", "Revenir"]
 
 class MenuSecondaire:
-    def __init__(self, screen, background_image):
+    def __init__(self, screen, background_image,mode_option):
         self.screen = screen
         self.background_image = background_image
+        self.mode_option = mode_option
         self.selected_option = 0
         self.menu_active = True
 
@@ -59,7 +60,10 @@ class MenuSecondaire:
         """Exécute l'option sélectionnée."""
         if self.selected_option == 0:  # Jouer
             print("Le jeu commence...")
+            menu3 = ClassSelectionMenu(self.screen, self.background_image, self.mode_option)
+            menu3.main()
             self.menu_active = False
+            
         elif self.selected_option == 1:  # Options
             self.show_options()
         elif self.selected_option == 2:  # Revenir

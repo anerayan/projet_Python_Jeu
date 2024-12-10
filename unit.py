@@ -60,9 +60,11 @@ class Unit:
 
     def draw(self, screen, images):
         """Affiche l'unité sur l'écran avec une image ou un cercle si l'image est manquante."""
-        if self.nom.startswith("Homme de Cromagnon"):
+        if self.nom == 'Homme de Cromagnon_joueur_1' or self.nom == 'Homme de Cromagnon_joueur_2' :
             image = images.get("cromagnon")
-        elif self.nom.startswith("Homme Futur"):
+        elif self.nom == 'Homme_moderne_joueur_1' or self.nom == 'Homme_moderne_joueur_2' :
+            image = images.get("homme_moderne")
+        elif self.nom == 'Homme_futur_joueur_1' or self.nom == 'Homme_futur_joueur_2' :
             image = images.get("homme_futur")
         else:
             image = images.get("anomaly")  # Image par défaut si le nom ne correspond pas
@@ -72,5 +74,5 @@ class Unit:
         else:
             color = (0, 0, 255) if self.team == 'player' else (255, 0, 0)
             if self.is_selected:
-                pygame.draw.rect(screen, (0, 255, 0), (self.x * 60, self.y * 60, 60, 60))
+                pygame.draw.rect(screen, (0, 255, 0), (self.x * 100, self.y * 100, 70, 70))
             pygame.draw.circle(screen, color, (self.x * 60 + 30, self.y * 60 + 30), 20)
