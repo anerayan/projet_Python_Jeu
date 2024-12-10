@@ -6,9 +6,9 @@ Created on Wed Nov 27 16:54:32 2024
 @author: anis
 """
 
-
 import pygame
 import random
+import os  # Ajoutez cet import pour utiliser os.path.join
 from unit import Unit
 
 GRID_SIZE = 12
@@ -23,24 +23,27 @@ class Game:
         self.screen = screen
         self.images = self.load_images()
 
-        # Initialisation des unités avec esquive et coup critique
+        # Initialisation des unités avec esquive
         self.player_units = [
-            Unit(0, 0, "Homme de Cromagnon", 10, 2, 1, "player", 3, None, 30, 20),
-            Unit(1, 0, "Homme de Cromagnon", 10, 2, 1, "player", 3, None, 30, 20)
+            Unit(0, 0, "Homme de Cromagnon", 10, 2, 1, "player", 3, None, 30),
+            Unit(1, 0, "Homme de Cromagnon", 10, 2, 1, "player", 3, None, 30)
         ]
         self.enemy_units = [
-            Unit(6, 6, "Homme Futur", 8, 1, 1, "enemy", 2, None, 20, 15),
-            Unit(7, 6, "Homme Futur", 8, 1, 1, "enemy", 2, None, 20, 15)
+            Unit(6, 6, "Homme Futur", 8, 1, 1, "enemy", 2, None, 20),
+            Unit(7, 6, "Homme Futur", 8, 1, 1, "enemy", 2, None, 20)
         ]
 
     def load_images(self):
-        base_path = "images"
-        images = {
-            "cromagnon": pygame.transform.scale(pygame.image.load(f"{base_path}/cromagnon.png"), (CELL_SIZE, CELL_SIZE)),
-            "homme_futur": pygame.transform.scale(pygame.image.load(f"{base_path}/homme_futur.png"), (CELL_SIZE, CELL_SIZE)),
-            "anomaly": pygame.Surface((CELL_SIZE, CELL_SIZE))
-        }
-        images["anomaly"].fill((255, 0, 0))
+        base_path = os.path.join(os.path.dirname(__file__), 'images')
+        images = {}
+        try:
+            images['cromagnon'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'cromagnon.png')), (CELL_SIZE, CELL_SIZE))
+            images['homme_futur'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'homme_futur.png')), (CELL_SIZE, CELL_SIZE))
+            images['anomaly'] = pygame.Surface((CELL_SIZE, CELL_SIZE))
+            images['anomaly'].fill((255, 0, 0))
+        except FileNotFoundError as e:
+            print(f"Erreur : Fichier image manquant - {e.filename}")
+            exit()
         return images
 
     def handle_player_turn(self):
