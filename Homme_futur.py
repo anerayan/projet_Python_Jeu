@@ -4,7 +4,7 @@ Created on Wed Nov 27 16:36:07 2024
 
 @author: rayan
 """
-
+import pygame 
 
 from unit import Unit
 from competences import fusil
@@ -32,7 +32,13 @@ class Homme_futur_player1(Unit):
            nom de la competence qu'utilise l'unité
                """
                super().__init__(0,0,'Homme_futur_joueur_1',12,0,10,'player',9,fusil(),80)
-       
+    def shoot(self, screen, target_x, target_y):
+        """Affiche un tir en direction de la cible."""
+        pygame.draw.line(screen, (0, 255, 0), (self.x * 60 + 30, self.y * 60 + 30), (target_x, target_y), 5)
+
+    def grenade(self, screen, target_x, target_y):
+        """Affiche une explosion de grenade."""
+        pygame.draw.circle(screen, (255, 0, 0), (target_x, target_y), 30)   
 
 class Homme_futur_player2(Unit):
     def __init__(self):
@@ -58,3 +64,10 @@ class Homme_futur_player2(Unit):
            nom de la competence qu'utilise l'unité
                """
                super().__init__(7,8,'Homme_futur_joueur_2',12,0,10,'enemy',9,fusil(),80)
+    def shoot(self, screen, target_x, target_y):
+        """Affiche un tir en direction de la cible."""
+        pygame.draw.line(screen, (0, 255, 0), (self.x * 60 + 30, self.y * 60 + 30), (target_x, target_y), 5)
+
+    def grenade(self, screen, target_x, target_y):
+        """Affiche une explosion de grenade."""
+        pygame.draw.circle(screen, (255, 0, 0), (target_x, target_y), 30)
