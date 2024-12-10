@@ -1,62 +1,63 @@
 import pygame
 import random
+
 class Unit:
-    def __init__(self, x, y, nom, health, attack, defense, team, move_counter, competence,esquive):
+    def __init__(self, x, y, nom, health, attack_power, defense, team, move_counter, competence, esquive, critique_chance):
         """
         Initialise une unité.
 
         Paramètres
         ----------
-        x : int
-            Coordonnée x sur la grille.
-        y : int
-            Coordonnée y sur la grille.
-        nom : str
-            Nom de l'unité.
-        health : int
-            Points de vie de l'unité.
-        attack : int
-            Valeur d'attaque de l'unité.
-        defense : int
-            Valeur de défense de l'unité.
-        team : str
-            Équipe de l'unité ('player' ou 'enemy').
-        move_counter : int
-            Nombre de déplacements possibles.
-        competence : object
-            Compétence spéciale de l'unité.
-        esquive : int
-            Statistique d'esquive de l'unité
+        x : int : Coordonnée x sur la grille.
+        y : int : Coordonnée y sur la grille.
+        nom : str : Nom de l'unité.
+        health : int : Points de vie de l'unité.
+        attack_power : int : Valeur d'attaque de l'unité.
+        defense : int : Valeur de défense de l'unité.
+        team : str : Équipe de l'unité ('player' ou 'enemy').
+        move_counter : int : Nombre de déplacements possibles.
+        competence : object : Compétence spéciale de l'unité.
+        esquive : int : Statistique d'esquive de l'unité.
+        critique_chance : int : Probabilité de coup critique (en %).
         """
         self.x = x
         self.y = y
         self.nom = nom
         self.health = health
-        self.attack = attack
+        self.attack_power = attack_power
         self.defense = defense
         self.team = team
         self.move_counter = move_counter
         self.competence = competence
         self.is_selected = False
         self.esquive = esquive
+        self.critique_chance = critique_chance
+
     def move(self, dx, dy):
         """Déplace l'unité de dx et dy si possible."""
         if self.move_counter > 0:
             self.x += dx
             self.y += dy
-           
 
     def attack(self, target):
         """Attaque une autre unité."""
-        if random.randint(0,100)<self.esquive:
-            
-            damage = max(0, self.attack - target.defense)
-            target.health -= damage
+        if random.randint(0, 100) < target.esquive:
+            print(f"{self.nom} a raté son attaque sur {target.nom} !")
+            return
 
-    def competence_attack(self,target):
-        if random.randint(0,100)<self.esquive:    
-            return self.competence.attack(target,self)
+        damage = max(0, self.attack_power - target.defense)
 
+        # Coup critique
+        if random.randint(0, 100) < self.critique_chance:
+            damage *= 1.5
+            print(f"🔥 Coup critique ! {self.nom} inflige {damage} à {target.nom} !")
+
+        target.health -= damage
+        print(f"{self.nom} inflige {damage} à {target.nom}. Santé restante de {target.nom} : {target.health}")
+
+    def competence_attack(self, target, all_units):
+        """Utilise une compétence spéciale."""
+        return self.competence.attaque(target, self, all_units)
 
     def draw(self, screen, images):
         """Affiche l'unité sur l'écran avec une image ou un cercle si l'image est manquante."""
@@ -74,5 +75,10 @@ class Unit:
         else:
             color = (0, 0, 255) if self.team == 'player' else (255, 0, 0)
             if self.is_selected:
+<<<<<<< HEAD
                 pygame.draw.rect(screen, (0, 255, 0), (self.x * 100, self.y * 100, 70, 70))
             pygame.draw.circle(screen, color, (self.x * 60 + 30, self.y * 60 + 30), 20)
+=======
+                pygame.draw.rect(screen, (0, 255, 0), (self.x * 60, self.y * 60, 60, 60))
+            pygame.draw.circle(screen, color, (self.x * 60 + 30, self.y * 60 + 30), 20)
+>>>>>>> 3a9821c2adbe19cb216f84a0f6e8597e646b1c6c
