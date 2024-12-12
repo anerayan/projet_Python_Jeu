@@ -21,7 +21,7 @@ class competence(ABC):
     
 class fusil(competence):
     def __init__(self):
-        super().__init__(18, 0, 8, 60)
+        super().__init__(18, 0, 8, 70)
 
         
     def attack(self,cibles,selected_unit):

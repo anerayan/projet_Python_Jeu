@@ -19,6 +19,8 @@ class Homme_Cromagnon_player1(Unit):
             nom de l'unité'
         health : int
             La santé de l'unité.
+        max_health : int
+            Vie max de l'unité
         attack_power : int
             La puissance d'attaque de l'unité.
         defense : int
@@ -30,7 +32,7 @@ class Homme_Cromagnon_player1(Unit):
         competence : str
             nom de la competence qu'utilise l'unité
         """
-        super().__init__(0,1,'Homme de Cromagnon_joueur_1',20,25,15,8,'player',8,soin(),90)
+        super().__init__(0,1,'Homme de Cromagnon_joueur_1',20,20,16,10,'player',8,soin(),90)
     
     
     
@@ -49,6 +51,8 @@ class Homme_Cromagnon_player2(Unit):
             nom de l'unité'
         health : int
             La santé de l'unité.
+        max_health : int
+            Vie max de l'unité
         attack_power : int
             La puissance d'attaque de l'unité.
         defense : int
@@ -60,7 +64,7 @@ class Homme_Cromagnon_player2(Unit):
         competence : str
             nom de la competence qu'utilise l'unité
         """
-        super().__init__(11,11,'Homme de Cromagnon_joueur_2',20,25,15,8,'enemy',8,soin(),90)
+        super().__init__(11,11,'Homme de Cromagnon_joueur_2',20,20,16,10,'enemy',8,soin(),90)
         
         
 

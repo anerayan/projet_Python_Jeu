@@ -89,7 +89,7 @@ class Game:
         
         print(self.player_units)
         self.anomalies = [(0, 11), (1, 10),(2,9),(3,8),(4, 7), (5, 6),(6,5),(7,4),(8, 3), (9,2),(10,1),(11,0)] # Cases ralentissantes
-        self.portals = self.generate_random_positions(4) # Portails temporels connectés
+        self.portals = self.generate_random_positions(6) # Portails temporels connectés
          
         self.main()
     
@@ -103,17 +103,27 @@ class Game:
                 positions.add((x, y))
         return list(positions)
     
+     
     def display_competence_zone(self, unit):
-        """Affiche la zone de compétence autour d'une unité."""
-        range_zone = unit.competence.portee if unit.competence else 1  # Portée de la compétence
+        """Displays the competence zone around a unit."""
+        range_zone = unit.competence.portee if unit.competence else 1  # Competence range
+
         for dx in range(-range_zone, range_zone + 1):
             for dy in range(-range_zone, range_zone + 1):
                 x = unit.x + dx
                 y = unit.y + dy
-                if 0 <= x < GRID_SIZE and 0 <= y < GRID_SIZE:
-                    rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-                    pygame.draw.rect(self.screen, (0, 0, 255), rect, 2)  # Zone en bleu
-                    
+
+            # Ensure within grid bounds
+                if 0 <= x < WIDTH and 0 <= y < HEIGHT:
+                # Check for circular zone
+                    if abs(dx) + abs(dy) <= range_zone:
+                        rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+                        pygame.draw.rect(self.screen, (0, 0, 255), rect, 2)  # Blue border for zone
+
+    # Highlight the center
+        center_rect = pygame.Rect(unit.x * CELL_SIZE, unit.y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+        pygame.draw.rect(self.screen, (255, 0, 0), center_rect)  # Red for the center
+
     def handle_player_turn(self):
         """Gestion du tour des joueurs."""
         for selected_unit in self.player_units:
@@ -186,8 +196,10 @@ class Game:
                                     
                             has_acted = True
                         
-                        if event.key == pygame.K_d:
-                            self.display_competence_zone(selected_unit)
+                        # if event.key == pygame.K_d:
+                        #     while event.type == pygame.KEYDOWN:
+                        #         self.display_competence_zone(selected_unit)
+                      
                            
                             
                                 
@@ -207,8 +219,9 @@ class Game:
             if abs(enemy.x - target.x) <= 1 and abs(enemy.y - target.y) <= 1:
                 enemy.attack(target)
                 if target.health <= 0:
-                    enemy.display_death()
                     self.player_units.remove(target)
+            elif abs(enemy.x - target.x) <= enemy.competence.portee and abs(enemy.y - target.y) <= enemy.competence.portee:
+                enemy.competence.attack(self.player_units,enemy)
 
 
 
@@ -284,7 +297,8 @@ class Game:
                             has_acted = True
                          
                         if event.key == pygame.K_d:
-                             self.display_competence_zone(selected_unit)
+                            while event.type == pygame.KEYUP:
+                                self.display_competence_zone(selected_unit)
                       
                                 
                     
@@ -343,6 +357,9 @@ class Game:
             images['homme_futur'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'homme_futur.png')), (60, 60))
             images['portal'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'portal.png')), (60, 60))
             images['anomaly'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'anomaly.png')), (60, 60))
+            images['cromagnon2'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'cromagnon2.png')), (60, 60))
+            images['homme_moderne2'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'future_soldier2.png')), (60, 60))
+            images['homme_futur2'] = pygame.transform.scale(pygame.image.load(os.path.join(base_path, 'homme_futur2.png')), (60, 60))
         except FileNotFoundError as e:
             print(f"Erreur : {e}. Vérifiez que toutes les images sont présentes dans le dossier 'images'.")
             pygame.quit()

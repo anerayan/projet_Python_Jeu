@@ -35,12 +35,19 @@ class Unit:
 
     def draw(self, screen, images):
         """Affiche l'unité sur l'écran avec une image ou un cercle si l'image est manquante."""
-        if self.nom == 'Homme de Cromagnon_joueur_1' or self.nom == 'Homme de Cromagnon_joueur_2':
+        if self.nom == 'Homme de Cromagnon_joueur_1':
             image = images.get("cromagnon")
-        elif self.nom == 'Homme_futur_joueur_2' or self.nom == 'Homme_futur_joueur_1':
-            image = images.get("homme_futur")
-        elif self.nom == 'Homme_moderne_joueur_2' or self.nom == 'Homme_moderne_joueur_1':
+        elif self.nom == 'Homme de Cromagnon_joueur_2':
+            image = images.get("cromagnon2")
+        elif self.nom == 'Homme_futur_joueur_1':
+            image = images.get("homme_futur")   
+        elif self.nom == 'Homme_futur_joueur_2':
+            image = images.get("homme_futur2")
+        elif self.nom == 'Homme_moderne_joueur_1':
             image = images.get("homme_moderne")
+        elif self.nom == 'Homme_moderne_joueur_2':
+            image = images.get("homme_moderne2")
+        
         else:
             image = images.get("anomaly")  # Image par défaut si le nom ne correspond pas
 
@@ -52,11 +59,11 @@ class Unit:
         
     def draw_health_bar(self, screen):
         """Affiche une barre de vie au-dessus de l'unité."""
-        bar_width = 50
+        bar_width = 60
         bar_height = 5
         fill = (self.health / self.max_health) * bar_width
-        pygame.draw.rect(screen, (255, 0, 0), (self.x * 60, self.y * 60 - 10, bar_width, bar_height))  # Barre rouge
-        pygame.draw.rect(screen, (0, 255, 0), (self.x * 60, self.y * 60 - 10, fill, bar_height))  # Barre verte
+        pygame.draw.rect(screen, (255, 0, 0), (self.x * 60, self.y * 60 , bar_width, bar_height))  # Barre rouge
+        pygame.draw.rect(screen, (0, 255, 0), (self.x * 60, self.y * 60 , fill, bar_height))  # Barre verte
 
 class Terrain:
     def __init__(self, grid_size):
@@ -66,9 +73,9 @@ class Terrain:
 
    
 
-    def draw_terrain(self, screen):
-        """Affiche les portails et anomalies sur l'écran."""
-        for x, y in self.portals:
-            pygame.draw.circle(screen, (0, 0, 255), (x * 60 + 30, y * 60 + 30), 20)  # Portail en bleu
-        for x, y in self.anomalies:
-            pygame.draw.circle(screen, (255, 165, 0), (x * 60 + 30, y * 60 + 30), 20)  # Anomalie en orange
+    # def draw_terrain(self, screen):
+    #     """Affiche les portails et anomalies sur l'écran."""
+    #     for x, y in self.portals:
+    #         pygame.draw.circle(screen, (0, 0, 255), (x * 60 + 30, y * 60 + 30), 20)  # Portail en bleu
+    #     for x, y in self.anomalies:
+    #         pygame.draw.circle(screen, (255, 165, 0), (x * 60 + 30, y * 60 + 30), 20)  # Anomalie en orange
