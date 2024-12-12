@@ -9,7 +9,7 @@ import pygame
 import os
 from chronotactics import Game 
 # Constantes
-WIDTH = 1200  # Largeur de l'écran
+WIDTH = 1000  # Largeur de l'écran
 HEIGHT = 800  # Hauteur de l'écran
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

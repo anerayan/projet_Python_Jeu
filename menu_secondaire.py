@@ -8,7 +8,7 @@ Created on Sun Dec 8
 import pygame
 from menu3 import ClassSelectionMenu
 # Constantes
-WIDTH = 1200
+WIDTH = 1000
 HEIGHT = 800
 WHITE = (255, 255, 255)
 GRAY = (100, 100, 100)

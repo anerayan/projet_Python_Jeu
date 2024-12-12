@@ -30,7 +30,7 @@ class Homme_Cromagnon_player1(Unit):
         competence : str
             nom de la competence qu'utilise l'unité
         """
-        super().__init__(0,1,'Homme de Cromagnon_joueur_1',20,10,8,'player',8,soin(),90)
+        super().__init__(0,1,'Homme de Cromagnon_joueur_1',20,20,14,8,'player',8,soin(),90)
     
     
     
@@ -60,7 +60,7 @@ class Homme_Cromagnon_player2(Unit):
         competence : str
             nom de la competence qu'utilise l'unité
         """
-        super().__init__(7,8,'Homme de Cromagnon_joueur_2',20,10,8,'enemy',8,soin(),90)
+        super().__init__(7,8,'Homme de Cromagnon_joueur_2',20,20,14,8,'enemy',8,soin(),90)
         
         
 

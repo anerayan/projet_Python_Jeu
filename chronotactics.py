@@ -8,8 +8,8 @@ Created on Wed Nov 27 14:12:14 2024
 import pygame
 import random
 import os
-from unit import Unit
-from Cromagnon import Homme_Cromagnon_player1, soin
+
+from Cromagnon import Homme_Cromagnon_player1
 from Homme_futur import Homme_futur_player1
 from Normal import Homme_moderne_player1
 from Cromagnon import Homme_Cromagnon_player2
@@ -88,9 +88,32 @@ class Game:
             self.enemy_units[1] = Homme_moderne_player2()
         
         print(self.player_units)
-        self.portals = [(3, 3), (6, 1)]  # Portails temporels connectés
-        self.anomalies = [(2, 2), (5, 5)]  # Cases ralentissantes
+        self.anomalies = [(6, 6), (7, 7),(6,7),(7,6)] # Cases ralentissantes
+        self.portals = self.generate_random_positions(5) # Portails temporels connectés
+         
         self.main()
+    
+    def generate_random_positions(self,count):
+        """Génère des positions aléatoires uniques sur la grille."""
+        positions = set()
+        while len(positions) < count:
+            x = random.randint(0, GRID_SIZE - 1)
+            y = random.randint(0, GRID_SIZE - 1)
+            if (x,y)!=(0,0) and (x,y) not in self.anomalies:
+                positions.add((x, y))
+        return list(positions)
+    
+    def display_competence_zone(self, unit):
+        """Affiche la zone de compétence autour d'une unité."""
+        range_zone = unit.competence.portee if unit.competence else 1  # Portée de la compétence
+        for dx in range(-range_zone, range_zone + 1):
+            for dy in range(-range_zone, range_zone + 1):
+                x = unit.x + dx
+                y = unit.y + dy
+                if 0 <= x < GRID_SIZE and 0 <= y < GRID_SIZE:
+                    rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+                    pygame.draw.rect(self.screen, (0, 0, 255), rect, 2)  # Zone en bleu
+                    
     def handle_player_turn(self):
         """Gestion du tour des joueurs."""
         for selected_unit in self.player_units:
@@ -163,7 +186,10 @@ class Game:
                                     
                             has_acted = True
                         
-                 
+                        if event.key == pygame.K_d:
+                            self.display_competence_zone(selected_unit)
+                           
+                            
                                 
                     
                          
@@ -267,10 +293,13 @@ class Game:
     def teleport_unit(self, unit):
         """Téléporte une unité à un portail connecté."""
         print(f"🌀 {unit.team} traverse un portail temporel !")
-        for portal in self.portals:
-            if portal != (unit.x, unit.y):
-                unit.x, unit.y = portal
-                break
+        
+        portal = self.portals[random.randint(0,len(self.portals)-1)]
+        if portal != (unit.x, unit.y):
+            unit.x, unit.y = portal
+        else:
+            portal = self.portals[random.randint(0,len(self.portals)-1)]
+       
 
     def render(self):
         """Affiche l'état actuel du jeu."""
