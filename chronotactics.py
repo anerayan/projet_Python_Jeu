@@ -281,12 +281,14 @@ class Game:
                 pygame.draw.rect(self.screen, WHITE, rect, 1)
 
         # Portails
-        for px, py in self.portals:
-            pygame.draw.circle(self.screen, BLUE, (px * CELL_SIZE + CELL_SIZE // 2, py * CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 3)
+        image = self.images.get("portal")
+        for ax, ay in self.portals:
+            self.screen.blit(image, (ax * 60, ay * 60))
 
         # Anomalies
+        image = self.images.get("anomaly")
         for ax, ay in self.anomalies:
-            pygame.draw.circle(self.screen, ORANGE, (ax * CELL_SIZE + CELL_SIZE // 2, ay * CELL_SIZE + CELL_SIZE // 2), CELL_SIZE // 3)
+            self.screen.blit(image, (ax * 60, ay * 60))
 
         # Units
         for unit in self.player_units: 
