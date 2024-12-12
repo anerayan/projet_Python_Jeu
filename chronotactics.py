@@ -88,8 +88,8 @@ class Game:
             self.enemy_units[1] = Homme_moderne_player2()
         
         print(self.player_units)
-        self.anomalies = [(6, 6), (7, 7),(6,7),(7,6)] # Cases ralentissantes
-        self.portals = self.generate_random_positions(5) # Portails temporels connectés
+        self.anomalies = [(0, 11), (1, 10),(2,9),(3,8),(4, 7), (5, 6),(6,5),(7,4),(8, 3), (9,2),(10,1),(11,0)] # Cases ralentissantes
+        self.portals = self.generate_random_positions(4) # Portails temporels connectés
          
         self.main()
     
@@ -257,11 +257,11 @@ class Game:
 
                         # Touche espace pour attaquer
                         if event.key == pygame.K_SPACE:
-                            for enemy in self.enemy_units:
+                            for enemy in self.player_units:
                                 if abs(selected_unit.x - enemy.x) <= 1 and abs(selected_unit.y - enemy.y) <= 1:
                                     selected_unit.attack(enemy)
                                     if enemy.health <= 0:
-                                        self.enemy_units.remove(enemy)
+                                        self.player_units.remove(enemy)
                                     has_acted = True
                                         
                                     
@@ -277,12 +277,14 @@ class Game:
                         if event.key == pygame.K_c:
                             
                             selected_unit.competence.attack(self.enemy_units,selected_unit)
-                            for enemy in self.enemy_units:
+                            for enemy in self.player_units:
                                 if enemy.health <= 0:
-                                    self.enemy_units.remove(enemy)
+                                    self.player_units.remove(enemy)
                                     
                             has_acted = True
-                        
+                         
+                        if event.key == pygame.K_d:
+                             self.display_competence_zone(selected_unit)
                       
                                 
                     
@@ -350,6 +352,10 @@ class Game:
 
     def main(self):
         self.images = self.load_images()
+        pygame.mixer.init()
+        pygame.mixer.music.load('music.mp3')
+        pygame.mixer.music.play(-1)  # Loops indefinitely
+        
         while True:
             if self.enemy_units != [] and self.player_units != []:
                 self.render()

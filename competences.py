@@ -66,7 +66,7 @@ class soin(competence):
         super().__init__(0, 5, 0, 100)
         
     def attack(self,cibles,selected_unit):
-        if selected_unit.health<=30:
+        if selected_unit.health<=selected_unit.max_health-self.competence_defense:
             selected_unit.health+=self.competence_defense
             print(f"{selected_unit.nom} s'est soigné.")
     
