@@ -32,7 +32,7 @@ class Game:
     Classe pour gérer le jeu ChronoTactics.
     """
 
-    def __init__(self, screen,selected_classes,choix_joueur):
+    def __init__(self, screen,selected_classes,choix_joueur, volume):
         
         """
         x : int
@@ -60,6 +60,7 @@ class Game:
         self.enemy_units =  selected_classes[1]
         self.choix_joueur = choix_joueur
         self.images = self.load_images()
+        self.volume = volume
         if selected_classes[0][0] == 'Cromagnon':
             self.player_units[0] = Homme_Cromagnon_player1()
         if selected_classes[0][0] == 'Homme Futur':
@@ -87,7 +88,16 @@ class Game:
         if selected_classes[1][1] == 'Homme Moderne':
             self.enemy_units[1] = Homme_moderne_player2()
         
-        print(self.player_units)
+        self.player_units[0].x = 0
+        self.player_units[0].y = 0
+        self.player_units[1].x = 1
+        self.player_units[1].y = 0
+        
+        self.enemy_units[0].x = 11
+        self.enemy_units[0].y = 11
+        self.enemy_units[1].x = 10
+        self.enemy_units[1].y = 11
+        
         self.anomalies = [(0, 11), (1, 10),(2,9),(3,8),(4, 7), (5, 6),(6,5),(7,4),(8, 3), (9,2),(10,1),(11,0)] # Cases ralentissantes
         self.portals = self.generate_random_positions(6) # Portails temporels connectés
          
@@ -99,7 +109,7 @@ class Game:
         while len(positions) < count:
             x = random.randint(0, GRID_SIZE - 1)
             y = random.randint(0, GRID_SIZE - 1)
-            if (x,y)!=(0,0) and (x,y) not in self.anomalies:
+            if (x,y)!=(0,0) and (x,y) not in self.anomalies and (x,y)!=(1,0) and (x,y)!=(11,11) and (x,y)!=(10,11):
                 positions.add((x, y))
         return list(positions)
     
@@ -130,13 +140,14 @@ class Game:
             has_acted = False
             selected_unit.is_selected = True
             self.render()
+            has_teleported = False
             cpt_move = 0
             #selected_unit.display_health()  
             while not has_acted:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
-                        exit()
+                        
 
                     if event.type == pygame.KEYDOWN:
                         dx, dy = 0, 0
@@ -151,12 +162,14 @@ class Game:
                                 dy = 1
                             
                    
-                            
-                        selected_unit.move(dx, dy)
-                        cpt_move+=1
+                        if selected_unit.x+dx != self.enemy_units[0].x and selected_unit.y+dy != self.enemy_units[0].y:
+                            if selected_unit.x+dx != self.enemy_units[1].x and selected_unit.y+dy != self.enemy_units[1].y:
+                                selected_unit.move(dx, dy)
+                                cpt_move+=1
                         # Portail : téléportation
-                        if (selected_unit.x, selected_unit.y) in self.portals:
+                        if (selected_unit.x, selected_unit.y) in self.portals and has_teleported == False:
                             self.teleport_unit(selected_unit)
+                            has_teleported == True
 
                         # Anomalie : ralentissement
                         elif (selected_unit.x, selected_unit.y) in self.anomalies:
@@ -230,8 +243,10 @@ class Game:
         for selected_unit in self.enemy_units:
             has_acted = False
             selected_unit.is_selected = True
+            
             self.render()
             cpt_move = 0
+            has_teleported = False
             #selected_unit.display_health()  
             while not has_acted:
                 for event in pygame.event.get():
@@ -252,12 +267,15 @@ class Game:
                                 dy = 1
                             
                    
-                            
-                        selected_unit.move(dx, dy)
-                        cpt_move+=1
+                        if selected_unit.x+dx != self.player_units[0].x and selected_unit.y+dy != self.player_units[0].y:
+                            if selected_unit.x+dx != self.player_units[1].x and selected_unit.y+dy != self.player_units[1].y:
+                                selected_unit.move(dx, dy)
+                                cpt_move+=1   
+                        
                         # Portail : téléportation
-                        if (selected_unit.x, selected_unit.y) in self.portals:
+                        if (selected_unit.x, selected_unit.y) in self.portals and has_teleported == False:
                             self.teleport_unit(selected_unit)
+                            has_teleported == True
 
                         # Anomalie : ralentissement
                         elif (selected_unit.x, selected_unit.y) in self.anomalies:
@@ -289,7 +307,7 @@ class Game:
                         #touche C pour utiliser une attaque de loin
                         if event.key == pygame.K_c:
                             
-                            selected_unit.competence.attack(self.enemy_units,selected_unit)
+                            selected_unit.competence.attack(self.player_units,selected_unit)
                             for enemy in self.player_units:
                                 if enemy.health <= 0:
                                     self.player_units.remove(enemy)
@@ -371,6 +389,7 @@ class Game:
         self.images = self.load_images()
         pygame.mixer.init()
         pygame.mixer.music.load('music.mp3')
+        pygame.mixer.music.set_volume(self.volume/10)
         pygame.mixer.music.play(-1)  # Loops indefinitely
         
         while True:

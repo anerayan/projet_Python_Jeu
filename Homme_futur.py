@@ -31,7 +31,7 @@ class Homme_futur_player1(Unit):
        competence : str
            nom de la competence qu'utilise l'unité
                """
-               super().__init__(0,0,'Homme_futur_joueur_1',12,12,0,10,'player',4,fusil(),80)
+               super().__init__(0,0,'Homme_futur_joueur_1',12,12,0,10,'player',5,fusil(),30)
     def shoot(self, screen, target_x, target_y):
         """Affiche un tir en direction de la cible."""
         pygame.draw.line(screen, (0, 255, 0), (self.x * 60 + 30, self.y * 60 + 30), (target_x, target_y), 5)
@@ -63,7 +63,7 @@ class Homme_futur_player2(Unit):
        competence : str
            nom de la competence qu'utilise l'unité
                """
-               super().__init__(10,11,'Homme_futur_joueur_2',12,12,0,8,'enemy',4,fusil(),80)
+               super().__init__(10,11,'Homme_futur_joueur_2',12,12,0,8,'enemy',5,fusil(),30)
     def shoot(self, screen, target_x, target_y):
         """Affiche un tir en direction de la cible."""
         pygame.draw.line(screen, (0, 255, 0), (self.x * 60 + 30, self.y * 60 + 30), (target_x, target_y), 5)

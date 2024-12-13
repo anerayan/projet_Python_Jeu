@@ -23,7 +23,7 @@ class MenuSecondaire:
         self.mode_option = mode_option
         self.selected_option = 0
         self.menu_active = True
-
+        self.volume = 50
     def display_menu(self):
         """Affiche le sous-menu."""
         self.screen.blit(self.background_image, (0, 0))  # Affiche l'image de fond
@@ -61,7 +61,7 @@ class MenuSecondaire:
         if self.selected_option == 0:  # Jouer
             print("Le jeu commence...")
             menu3 = ClassSelectionMenu(self.screen, self.background_image, self.mode_option)
-            menu3.main()
+            menu3.main(self.volume)
             self.menu_active = False
             
         elif self.selected_option == 1:  # Options
@@ -80,9 +80,9 @@ class MenuSecondaire:
             font = pygame.font.Font(None, 50)
 
             # Affiche les options
-            brightness_text = font.render(f"Luminosité: {brightness}%", True, WHITE)
+            #brightness_text = font.render(f"Luminosité: {brightness}%", True, WHITE)
             volume_text = font.render(f"Son: {volume}%", True, WHITE)
-            self.screen.blit(brightness_text, (WIDTH // 2 - brightness_text.get_width() // 2, HEIGHT // 3))
+            #self.screen.blit(brightness_text, (WIDTH // 2 - brightness_text.get_width() // 2, HEIGHT // 3))
             self.screen.blit(volume_text, (WIDTH // 2 - volume_text.get_width() // 2, HEIGHT // 3 + 100))
 
             pygame.display.flip()
@@ -100,5 +100,6 @@ class MenuSecondaire:
                         volume -= 10
                     elif event.key == pygame.K_RIGHT and volume < 100:
                         volume += 10
-                    elif event.key == pygame.K_RETURN:  # Retour au menu secondaire
-                        running = False
+                    elif event.key == pygame.K_RETURN:
+                        self.volume = volume
+                        running = False # Retour au menu secondaire

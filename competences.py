@@ -49,11 +49,11 @@ class grenade(competence):
 
     def attack(self, cibles, selected_unit):
         """Applique des dégâts dans une zone autour de la cible."""
-        zone_portee = 2  # Rayon de la zone d'effet
+          # Rayon de la zone d'effet
         print(f"💥 {selected_unit.nom} lance une grenade sur ses ennemis !")
         if random.randint(0, 100) <= self.precision:
             for cible in cibles:
-                if abs(selected_unit.x - cible.x) <= self.portee and abs(selected_unit.y - cible.y) <= self.portee:
+                if abs(selected_unit.x - cible.x) < self.portee and abs(selected_unit.y - cible.y) < self.portee:
                     damage = max(self.competence_power - cible.defense, 0)
                     cible.health -= damage
                     print(f"{selected_unit.nom} utilise une compétence sur {cible.nom}, infligeant {damage} dégâts.")

@@ -62,7 +62,9 @@ class Menu:
                         self.selected_option = (self.selected_option + 1) % len(MAIN_OPTIONS)
                     elif event.key == pygame.K_RETURN:
                         self.select_option()
+   
     def show_rules(self):
+        """Affiche les règles ligne par ligne au centre de l'écran."""
         self.screen.blit(self.background_image, (0, 0))  # Affiche l'image de fond
         font = pygame.font.Font(None, 50)
         rules_text = [
@@ -71,14 +73,33 @@ class Menu:
             "2. Utilisez les portails temporels stratégiquement.",
             "3. Vainquez tous les ennemis pour gagner.",
         ]
-        y_offset = HEIGHT // 4
-        for line in rules_text:
-             text = font.render(line, True, WHITE)
-             self.screen.blit(text, (WIDTH // 2 - text.get_width() // 2, y_offset))
-             y_offset += 60
-        pygame.display.flip()
-        pygame.time.wait(5000)
+    
 
+    # Affiche les règles
+        y_offset = HEIGHT // 4  # Position verticale de départ
+        for line in rules_text:
+            text = font.render(line, True, WHITE)
+            self.screen.blit(text, (WIDTH // 2 - text.get_width() // 2, y_offset))
+            y_offset += 60
+
+    # Met à jour l'affichage
+        pygame.display.flip()
+
+    # Attend une touche pour continuer
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.KEYDOWN:
+                    waiting = False  # Sort de la boucle et continue
+                    
+                    break
+        Menu(screen,background_image)
+    
+  
+        
     def select_option(self):
         """Exécute l'option sélectionnée."""
         if self.selected_option == 0:  # Joueur 1

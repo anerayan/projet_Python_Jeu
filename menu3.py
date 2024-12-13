@@ -79,7 +79,7 @@ class ClassSelectionMenu:
     
  # Suppose que le jeu est défini dans 'game.py'
 
-    def main(self):
+    def main(self,volume):
         pygame.init()
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("ChronoTactics")
@@ -95,7 +95,7 @@ class ClassSelectionMenu:
         print(f"Classes choisies : {selected_classes}")
 
         # Lancer le jeu avec les classes sélectionnées
-        Game(screen, selected_classes,choix)  # Passe les classes au jeu
+        Game(screen, selected_classes,choix,volume)  # Passe les classes au jeu
         
 
         pygame.quit()

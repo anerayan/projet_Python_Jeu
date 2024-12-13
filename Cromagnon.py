@@ -31,8 +31,10 @@ class Homme_Cromagnon_player1(Unit):
             nb de pas que l'unité peut faire'
         competence : str
             nom de la competence qu'utilise l'unité
+        esquive : int
+            precision d'attaque
         """
-        super().__init__(0,1,'Homme de Cromagnon_joueur_1',20,20,16,10,'player',8,soin(),90)
+        super().__init__(0,1,'Homme de Cromagnon_joueur_1',20,20,13,10,'player',7,soin(),30)
     
     
     
@@ -64,7 +66,7 @@ class Homme_Cromagnon_player2(Unit):
         competence : str
             nom de la competence qu'utilise l'unité
         """
-        super().__init__(11,11,'Homme de Cromagnon_joueur_2',20,20,16,10,'enemy',8,soin(),90)
+        super().__init__(11,11,'Homme de Cromagnon_joueur_2',20,20,13,10,'enemy',7,soin(),30)
         
         
 
